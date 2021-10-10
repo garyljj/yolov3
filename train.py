@@ -360,7 +360,7 @@ def train(hyp, opt, device, tb_writer=None):
                                                  dataloader=testloader,
                                                  save_dir=save_dir,
                                                  save_json=is_coco and final_epoch,
-                                                 verbose=nc < 50 and final_epoch,
+                                                 verbose=nc < 50,# and final_epoch,
                                                  plots=plots and final_epoch,
                                                  wandb_logger=wandb_logger,
                                                  compute_loss=compute_loss,
@@ -386,6 +386,7 @@ def train(hyp, opt, device, tb_writer=None):
             fi = fitness(np.array(results).reshape(1, -1))  # weighted combination of [P, R, mAP@.5, mAP@.5-.95]
             if fi > best_fitness:
                 best_fitness = fi
+                print(f'New "best.pt" @ Epoch: {epoch}')
             wandb_logger.end_epoch(best_result=best_fitness == fi)
 
             # Save model
